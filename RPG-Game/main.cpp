@@ -30,7 +30,19 @@ int main()
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
+
+		sf::Vector2f playerPosition = playerSprite.getPosition();
 		
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) 
+		{
+			playerSprite.setPosition(playerPosition + sf::Vector2f(1, 0));
+		}
+		
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		{
+			playerSprite.setPosition(playerPosition + sf::Vector2f(-1, 0));
+		}
+
 		//Draw
 		window.clear(sf::Color::Black);
 		window.draw(playerSprite);
