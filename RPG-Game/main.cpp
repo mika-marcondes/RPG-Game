@@ -34,14 +34,16 @@ int main()
 		sf::Vector2f playerPosition = playerSprite.getPosition();
 		
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) 
-		{
 			playerSprite.setPosition(playerPosition + sf::Vector2f(1, 0));
-		}
 		
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		{
 			playerSprite.setPosition(playerPosition + sf::Vector2f(-1, 0));
-		}
+	
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+			playerSprite.setPosition(playerPosition + sf::Vector2f(0, -1));
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+			playerSprite.setPosition(playerPosition + sf::Vector2f(0, 1));
 
 		//Draw
 		window.clear(sf::Color::Black);
