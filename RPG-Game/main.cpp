@@ -12,9 +12,12 @@ int main()
 	sf::Texture playerTexture;
 	sf::Sprite playerSprite;
 
-	if (playerTexture.loadFromFile("Assets/Player/Textures/_Idle.png")) 
+	if (playerTexture.loadFromFile("Assets/Player/Textures/_Run.png")) 
 	{
+		int animationFrame = 0;
+
 		playerSprite.setTexture(playerTexture);
+		playerSprite.setTextureRect(sf::IntRect(animationFrame * 120, 0, 120, 80));
 		std::cout << "Player image loaded!" << std::endl;
 	}
 
