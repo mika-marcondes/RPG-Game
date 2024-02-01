@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 int main()
 {
@@ -7,9 +8,15 @@ int main()
 
     sf::RenderWindow window(sf::VideoMode(800, 600), "Game", sf::Style::Default, settings);
 	
-	sf::CircleShape circle(40.f);
-	circle.setFillColor(sf::Color::Magenta);
-	circle.setPosition(sf::Vector2f(100,200));
+	//Load
+	sf::Texture playerTexture;
+	sf::Sprite playerSprite;
+
+	if (playerTexture.loadFromFile("Assets/Player/Textures/_Idle.png")) 
+	{
+		playerSprite.setTexture(playerTexture);
+		std::cout << "Player image loaded!" << std::endl;
+	}
 
 	while (window.isOpen())
 	{
@@ -23,7 +30,7 @@ int main()
 		
 		//Draw
 		window.clear(sf::Color::Black);
-		window.draw(circle);
+		window.draw(playerSprite);
 		window.display();
 	}
 
