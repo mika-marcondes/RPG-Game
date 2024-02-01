@@ -4,13 +4,16 @@
 int main()
 {
 	sf::ContextSettings settings;
-	settings.antialiasingLevel = 8;
+	settings.antialiasingLevel = 0;
 
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Game", sf::Style::Default, settings);
+    sf::RenderWindow window(sf::VideoMode(1240, 800), "Game", sf::Style::Default, settings);
 	
 	//Load
 	sf::Texture playerTexture;
 	sf::Sprite playerSprite;
+
+	sf::Texture enemyTexture;
+	sf::Sprite enemySprite;
 
 	if (playerTexture.loadFromFile("Assets/Player/Textures/_Run.png")) 
 	{
@@ -18,7 +21,14 @@ int main()
 
 		playerSprite.setTexture(playerTexture);
 		playerSprite.setTextureRect(sf::IntRect(animationFrame * 120, 0, 120, 80));
-		std::cout << "Player image loaded!" << std::endl;
+		playerSprite.setScale(sf::Vector2f(2, 2));
+	}
+
+	if (enemyTexture.loadFromFile("Assets/Enemy/Textures/Bringer-of-Death-SpritSheet.png"))
+	{
+		enemySprite.setTexture(enemyTexture);
+		enemySprite.setTextureRect(sf::IntRect(140, 0, 140, 93));
+		enemySprite.setScale(sf::Vector2f(2, 2));
 	}
 
 	while (window.isOpen())
@@ -47,6 +57,7 @@ int main()
 
 		//Draw
 		window.clear(sf::Color::Black);
+		window.draw(enemySprite);
 		window.draw(playerSprite);
 		window.display();
 	}
