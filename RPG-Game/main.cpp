@@ -9,10 +9,10 @@ int main()
     sf::RenderWindow window(sf::VideoMode(1240, 800), "Game", sf::Style::Default, settings);
 	window.setFramerateLimit(60);
 	
-	float bulletSpeed = 0.5;
+	float bulletSpeed = 0.04;
+	sf::Vector2f bulletDir;
 
-	//Load
-	sf::RectangleShape bullet(sf::Vector2f(10, 10));
+	std::vector<sf::RectangleShape> bullets;
 
 	sf::Texture playerTexture;
 	sf::Sprite playerSprite;
@@ -38,8 +38,6 @@ int main()
 		enemySprite.setPosition(sf::Vector2f(800, 400));
 	}
 
-	bullet.setPosition(sf::Vector2f(playerSprite.getPosition() + sf::Vector2f(120, 80)));
-
 	while (window.isOpen())
 	{
 		//Update
@@ -54,7 +52,6 @@ int main()
 
 		sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 		sf::Vector2f mouseCoords = window.mapPixelToCoords(mousePos, window.getDefaultView());
-		sf::Vector2f bulletDir = mouseCoords - bullet.getPosition();
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 			playerSprite.setPosition(playerPos + sf::Vector2f(1, 0));
@@ -70,15 +67,28 @@ int main()
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) 
 		{
-			bullet.setPosition(bullet.getPosition() + bulletDir * bulletSpeed);
-			std::cout << mouseCoords.x << ", " << mouseCoords.y << std::endl;
+			bullets.push_back(sf::RectangleShape(sf::Vector2f(10, 10)));
+
+			int i = bullets.size() - 1;
+			bullets[i].setPosition(playerSprite.getPosition() + sf::Vector2f(120, 80));
+			bulletDir = mouseCoords - bullets[i].getPosition();
+		}
+
+		for (size_t i = 0; i < bullets.size(); i++)
+		{
+			bullets[i].setPosition(bullets[i].getPosition() + bulletDir * bulletSpeed);
 		}
 
 		//Draw
 		window.clear(sf::Color::Black);
 		window.draw(enemySprite);
-		window.draw(bullet);
 		window.draw(playerSprite);
+
+		for (size_t i = 0; i < bullets.size(); i++)
+		{
+			window.draw(bullets[i]);
+		}
+
 		window.display();
 	}
 
