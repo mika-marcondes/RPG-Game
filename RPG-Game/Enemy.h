@@ -5,6 +5,8 @@ class Enemy
 {
 private:
 	sf::Texture texture;
+	sf::RectangleShape boundBox;
+	sf::Vector2i size;
 public:
 	sf::Sprite sprite;
 

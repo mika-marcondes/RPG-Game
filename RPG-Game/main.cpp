@@ -34,7 +34,7 @@ int main()
 				window.close();
 		}
 
-		player.Update();
+		player.Update(enemy.sprite);
 		enemy.Update();
 		bullet.Update(player.sprite, window);
 
