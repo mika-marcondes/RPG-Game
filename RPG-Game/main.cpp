@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+#include "Player.h"
+
 int main()
 {
 	sf::ContextSettings settings;
@@ -14,21 +16,12 @@ int main()
 
 	std::vector<sf::RectangleShape> bullets;
 
-	sf::Texture playerTexture;
-	sf::Sprite playerSprite;
+	Player player;
+	player.Initialize();
+	player.Load();
 
 	sf::Texture enemyTexture;
 	sf::Sprite enemySprite;
-
-	if (playerTexture.loadFromFile("Assets/Player/Textures/_Run.png")) 
-	{
-		int animationFrame = 0;
-		
-		playerSprite.setTexture(playerTexture);
-		playerSprite.setTextureRect(sf::IntRect(animationFrame * 120, 0, 120, 80));
-		playerSprite.setScale(sf::Vector2f(2, 2));
-		playerSprite.setPosition(sf::Vector2f(0, 0));
-	}
 
 	if (enemyTexture.loadFromFile("Assets/Enemy/Textures/Bringer-of-Death-SpritSheet.png"))
 	{
@@ -48,29 +41,17 @@ int main()
 				window.close();
 		}
 
-		sf::Vector2f playerPos = playerSprite.getPosition();
+		player.Update();
 
 		sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 		sf::Vector2f mouseCoords = window.mapPixelToCoords(mousePos, window.getDefaultView());
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-			playerSprite.setPosition(playerPos + sf::Vector2f(1, 0));
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-			playerSprite.setPosition(playerPos + sf::Vector2f(-1, 0));
-	
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-			playerSprite.setPosition(playerPos + sf::Vector2f(0, -1));
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-			playerSprite.setPosition(playerPos + sf::Vector2f(0, 1));
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) 
 		{
 			bullets.push_back(sf::RectangleShape(sf::Vector2f(10, 10)));
 
 			int i = bullets.size() - 1;
-			bullets[i].setPosition(playerSprite.getPosition() + sf::Vector2f(120, 80));
+			bullets[i].setPosition(player.sprite.getPosition() + sf::Vector2f(120, 80));
 			bulletDir = mouseCoords - bullets[i].getPosition();
 		}
 
@@ -82,7 +63,7 @@ int main()
 		//Draw
 		window.clear(sf::Color::Black);
 		window.draw(enemySprite);
-		window.draw(playerSprite);
+		window.draw(player.sprite);
 
 		for (size_t i = 0; i < bullets.size(); i++)
 		{
