@@ -1,8 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-
 #include "Player.h"
 #include "Enemy.h"
+#include "Bullet.h"
 
 int main()
 {
@@ -12,19 +12,17 @@ int main()
     sf::RenderWindow window(sf::VideoMode(1240, 800), "Game", sf::Style::Default, settings);
 	window.setFramerateLimit(60);
 	
-	float bulletSpeed = 0.04;
-	sf::Vector2f bulletDir;
-
-	std::vector<sf::RectangleShape> bullets;
-
 	Player player;
 	Enemy enemy;
+	Bullet bullet;
 
 	player.Initialize();
-	player.Load();
-
 	enemy.Initialize();
+	bullet.Initialize();
+
+	player.Load();
 	enemy.Load();
+	bullet.Load();
 
 	while (window.isOpen())
 	{
@@ -38,33 +36,14 @@ int main()
 
 		player.Update();
 		enemy.Update();
-
-		sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-		sf::Vector2f mouseCoords = window.mapPixelToCoords(mousePos, window.getDefaultView());
-
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) 
-		{
-			bullets.push_back(sf::RectangleShape(sf::Vector2f(10, 10)));
-
-			int i = bullets.size() - 1;
-			bullets[i].setPosition(player.sprite.getPosition() + sf::Vector2f(120, 80));
-			bulletDir = mouseCoords - bullets[i].getPosition();
-		}
-
-		for (size_t i = 0; i < bullets.size(); i++)
-		{
-			bullets[i].setPosition(bullets[i].getPosition() + bulletDir * bulletSpeed);
-		}
+		bullet.Update(player.sprite, window);
 
 		//Draw
 		window.clear(sf::Color::Black);
-		window.draw(enemy.sprite);
-		window.draw(player.sprite);
 
-		for (size_t i = 0; i < bullets.size(); i++)
-		{
-			window.draw(bullets[i]);
-		}
+		player.Draw(window);
+		enemy.Draw(window);
+		bullet.Draw(window);
 
 		window.display();
 	}
