@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "Player.h"
+#include "Enemy.h"
 
 int main()
 {
@@ -17,19 +18,13 @@ int main()
 	std::vector<sf::RectangleShape> bullets;
 
 	Player player;
+	Enemy enemy;
+
 	player.Initialize();
 	player.Load();
 
-	sf::Texture enemyTexture;
-	sf::Sprite enemySprite;
-
-	if (enemyTexture.loadFromFile("Assets/Enemy/Textures/Bringer-of-Death-SpritSheet.png"))
-	{
-		enemySprite.setTexture(enemyTexture);
-		enemySprite.setTextureRect(sf::IntRect(140, 0, 140, 93));
-		enemySprite.setScale(sf::Vector2f(2, 2));
-		enemySprite.setPosition(sf::Vector2f(800, 400));
-	}
+	enemy.Initialize();
+	enemy.Load();
 
 	while (window.isOpen())
 	{
@@ -42,6 +37,7 @@ int main()
 		}
 
 		player.Update();
+		enemy.Update();
 
 		sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 		sf::Vector2f mouseCoords = window.mapPixelToCoords(mousePos, window.getDefaultView());
@@ -62,7 +58,7 @@ int main()
 
 		//Draw
 		window.clear(sf::Color::Black);
-		window.draw(enemySprite);
+		window.draw(enemy.sprite);
 		window.draw(player.sprite);
 
 		for (size_t i = 0; i < bullets.size(); i++)
